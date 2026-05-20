@@ -59,3 +59,44 @@ tasks.named('test') {
     // System configs
 
 }
+
+tasks.register('serenityReport', JavaExec) {
+    group = 'verification'
+    description = 'Generates Serenity BDD aggregate report from test results'
+    dependsOn test
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'co.com.udea.certificacion.taller.buggycars.runners.SerenityReportMain'
+}
+
+tasks.register('copySerenityReportResources', Copy) {
+    group = 'verification'
+    description = 'Copies Serenity static report resources (css/js/images) into the report output folder'
+    dependsOn 'serenityReport'
+
+    def serenityResourcesJar = sourceSets.test.runtimeClasspath.find {
+        it.name.startsWith('serenity-report-resources-') && it.name.endsWith('.jar')
+    }
+
+    if (serenityResourcesJar != null) {
+        from(zipTree(serenityResourcesJar)) {
+            include 'report-resources/**'
+            eachFile { details ->
+                details.path = details.path.replaceFirst('report-resources/', '')
+            }
+            includeEmptyDirs = false
+        }
+    }
+
+    into "$projectDir/target/site/serenity"
+
+    doFirst {
+        def wrongResourceFile = file("$projectDir/target/site/serenity/serenity-resources")
+        if (wrongResourceFile.exists() && wrongResourceFile.isFile()) {
+            wrongResourceFile.delete()
+        }
+    }
+}
+
+tasks.named('serenityReport') {
+    finalizedBy 'copySerenityReportResources'
+}
