@@ -1,6 +1,7 @@
 package co.com.udea.certificacion.taller.buggycars.interactions;
 
 import co.com.udea.certificacion.taller.buggycars.models.BuggyCarsUser;
+import co.com.udea.certificacion.taller.buggycars.utils.WaitABit;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actions.Enter;
 import net.serenitybdd.screenplay.waits.WaitUntil;
@@ -25,10 +26,15 @@ public class FillRegistrationForm implements net.serenitybdd.screenplay.Interact
     public <T extends Actor> void performAs(T actor) {
         actor.attemptsTo(
                 WaitUntil.the(USERNAME_FIELD, isVisible()).forNoMoreThan(10).seconds(),
+                WaitABit.forMillis(1500),
                 Enter.theValue(user.getUsername()).into(USERNAME_FIELD),
+                WaitABit.forMillis(1500),
                 Enter.theValue(user.getFirstName()).into(FIRST_NAME_FIELD),
+                WaitABit.forMillis(1500),
                 Enter.theValue(user.getLastName()).into(LAST_NAME_FIELD),
+                WaitABit.forMillis(1500),
                 Enter.theValue(user.getPassword()).into(PASSWORD_FIELD),
+                WaitABit.forMillis(1500),
                 Enter.theValue(user.getPassword()).into(CONFIRM_PASSWORD_FIELD)
         );
     }
