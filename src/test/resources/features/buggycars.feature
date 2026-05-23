@@ -1,17 +1,20 @@
-Feature: Registro, inicio de sesión y comentario sobre un auto en Buggy Cars
+Feature: Registro, inicio de sesion y comentario sobre un auto en Buggy Cars
 
   Background:
     Given que el usuario abre Buggy Cars
 
+  @registro
   Scenario: Registro exitoso de un usuario
     When se registra con datos validos
     Then deberia ver un mensaje de registro exitoso
 
+  @login
   Scenario: Inicio de sesion exitoso
     Given que existe un usuario registrado
     When inicia sesion con sus credenciales
     Then deberia ver su nombre de usuario en la sesion
 
+  @comentario
   Scenario: Comentario exitoso sobre un auto
     Given que el usuario esta autenticado
     When selecciona un auto
