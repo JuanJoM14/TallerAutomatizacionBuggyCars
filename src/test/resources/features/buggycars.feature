@@ -8,6 +8,17 @@ Feature: Registro, inicio de sesion y comentario sobre un auto en Buggy Cars
     When se registra con datos validos
     Then deberia ver un mensaje de registro exitoso
 
+  @registro_negativo
+  Scenario Outline: Registro fallido con datos invalidos
+    When se registra con "<username>" "<firstName>" "<lastName>" "<password>" "<confirmPassword>"
+    Then deberia ver el mensaje de error "<error>"
+
+    Examples:
+      | username | firstName | lastName | password     | confirmPassword | error                                          |
+      |          | Juan      | Tester   | Password123! | Password123!    | Login is required                              |
+      | user1    | Juan      | Tester   | Password123! | Password999!    | Passwords do not match                         |
+      | user2    | Juan      | Tester   | 123          | 123             | Password should contain at least 6 characters |
+
   @login
   Scenario: Inicio de sesion exitoso
     Given que existe un usuario registrado

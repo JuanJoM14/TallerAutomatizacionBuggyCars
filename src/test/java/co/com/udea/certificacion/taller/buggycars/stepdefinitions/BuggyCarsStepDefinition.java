@@ -2,6 +2,7 @@ package co.com.udea.certificacion.taller.buggycars.stepdefinitions;
 
 import co.com.udea.certificacion.taller.buggycars.models.BuggyCarsUser;
 import co.com.udea.certificacion.taller.buggycars.questions.LoginWasSuccessful;
+import co.com.udea.certificacion.taller.buggycars.questions.RegistrationErrorMessageDisplayed;
 import co.com.udea.certificacion.taller.buggycars.questions.RegistrationWasSuccessful;
 import co.com.udea.certificacion.taller.buggycars.tasks.OpenBuggyCars;
 import co.com.udea.certificacion.taller.buggycars.tasks.LoginUser;
@@ -56,6 +57,15 @@ public class BuggyCarsStepDefinition {
         );
     }
 
+    @When("se registra con {string} {string} {string} {string} {string}")
+    public void seRegistraConDatosParametrizados(String username, String firstName, String lastName, String password, String confirmPassword) {
+        user = BuggyCarsUser.withData(username, firstName, lastName, password, confirmPassword);
+
+        OnStage.theActorInTheSpotlight().attemptsTo(
+                RegisterUser.withValidData(user)
+        );
+    }
+
     @When("inicia sesion con sus credenciales")
     public void iniciaSesionConSusCredenciales() {
         OnStage.theActorInTheSpotlight().attemptsTo(
@@ -75,6 +85,13 @@ public class BuggyCarsStepDefinition {
     public void deberiaVerUnMensajeDeRegistroExitoso() {
         OnStage.theActorInTheSpotlight().should(
                 seeThat(RegistrationWasSuccessful.displayed(), is(true))
+        );
+    }
+
+    @Then("deberia ver el mensaje de error {string}")
+    public void deberiaVerElMensajeDeError(String expectedMessage) {
+        OnStage.theActorInTheSpotlight().should(
+                seeThat(RegistrationErrorMessageDisplayed.withText(expectedMessage), is(true))
         );
     }
 

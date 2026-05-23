@@ -35,7 +35,7 @@ public class FillRegistrationForm implements net.serenitybdd.screenplay.Interact
                 WaitABit.forMillis(1500),
                 Enter.theValue(user.getPassword()).into(PASSWORD_FIELD),
                 WaitABit.forMillis(1500),
-                Enter.theValue(user.getPassword()).into(CONFIRM_PASSWORD_FIELD)
+                Enter.theValue(user.getConfirmPassword()).into(CONFIRM_PASSWORD_FIELD)
         );
     }
 
