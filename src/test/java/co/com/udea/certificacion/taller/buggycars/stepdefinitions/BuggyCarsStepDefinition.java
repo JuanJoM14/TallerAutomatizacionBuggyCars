@@ -1,6 +1,7 @@
 package co.com.udea.certificacion.taller.buggycars.stepdefinitions;
 
 import co.com.udea.certificacion.taller.buggycars.models.BuggyCarsUser;
+import co.com.udea.certificacion.taller.buggycars.questions.LoginErrorMessageDisplayed;
 import co.com.udea.certificacion.taller.buggycars.questions.LoginWasSuccessful;
 import co.com.udea.certificacion.taller.buggycars.questions.RegistrationErrorMessageDisplayed;
 import co.com.udea.certificacion.taller.buggycars.questions.RegistrationWasSuccessful;
@@ -13,7 +14,9 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
+import net.serenitybdd.screenplay.actions.Click;
 
+import static co.com.udea.certificacion.taller.buggycars.userinterfaces.UserInterface.LOGOUT_LINK;
 import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
 import static org.hamcrest.Matchers.is;
 
@@ -25,6 +28,15 @@ public class BuggyCarsStepDefinition {
     public void config(){
         OnStage.setTheStage(new OnlineCast());
         OnStage.theActorCalled("usuario");
+        OnStage.theActorInTheSpotlight().attemptsTo(
+                OpenBuggyCars.page()
+        );
+
+        if (LOGOUT_LINK.resolveFor(OnStage.theActorInTheSpotlight()).isVisible()) {
+            OnStage.theActorInTheSpotlight().attemptsTo(
+                    Click.on(LOGOUT_LINK)
+            );
+        }
         user = BuggyCarsUser.withRandomData();
     }
 
@@ -73,6 +85,36 @@ public class BuggyCarsStepDefinition {
         );
     }
 
+    @When("inicia sesion con una contraseña incorrecta")
+    public void iniciaSesionConUnaContrasenaIncorrecta() {
+        BuggyCarsUser invalidCredentials = BuggyCarsUser.withData(
+                user.getUsername(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getPassword() + "1",
+                user.getPassword() + "1"
+        );
+
+        OnStage.theActorInTheSpotlight().attemptsTo(
+                LoginUser.withValidData(invalidCredentials)
+        );
+    }
+
+    @When("inicia sesion con un usuario inexistente")
+    public void iniciaSesionConUnUsuarioInexistente() {
+        BuggyCarsUser invalidCredentials = BuggyCarsUser.withData(
+                "ghost" + System.currentTimeMillis(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getPassword(),
+                user.getPassword()
+        );
+
+        OnStage.theActorInTheSpotlight().attemptsTo(
+                LoginUser.withValidData(invalidCredentials)
+        );
+    }
+
     @When("selecciona un auto")
     public void seleccionaUnAuto() {
     }
@@ -99,6 +141,13 @@ public class BuggyCarsStepDefinition {
     public void deberiaVerSuNombreDeUsuarioEnLaSesion() {
         OnStage.theActorInTheSpotlight().should(
             seeThat(LoginWasSuccessful.displayedFor(user), is(true))
+        );
+    }
+
+    @Then("deberia ver el mensaje de error de login {string}")
+    public void deberiaVerElMensajeDeErrorDeLogin(String expectedMessage) {
+        OnStage.theActorInTheSpotlight().should(
+                seeThat(LoginErrorMessageDisplayed.withText(expectedMessage), is(true))
         );
     }
 

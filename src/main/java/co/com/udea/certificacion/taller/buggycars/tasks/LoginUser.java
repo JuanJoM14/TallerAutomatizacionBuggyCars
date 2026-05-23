@@ -5,10 +5,6 @@ import co.com.udea.certificacion.taller.buggycars.interactions.SubmitLogin;
 import co.com.udea.certificacion.taller.buggycars.models.BuggyCarsUser;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
-import net.serenitybdd.screenplay.waits.WaitUntil;
-
-import static co.com.udea.certificacion.taller.buggycars.userinterfaces.UserInterface.LOGOUT_LINK;
-import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isVisible;
 
 import static net.serenitybdd.screenplay.Tasks.instrumented;
 
@@ -24,8 +20,7 @@ public class LoginUser implements Task {
     public <T extends Actor> void performAs(T actor) {
         actor.attemptsTo(
                 FillLoginForm.with(user),
-                SubmitLogin.form(),
-                WaitUntil.the(LOGOUT_LINK, isVisible()).forNoMoreThan(15).seconds()
+                SubmitLogin.form()
         );
     }
 
