@@ -33,7 +33,7 @@ public class UserInterface {
             .locatedBy("#confirmPassword");
 
     public static final Target REGISTER_BUTTON = Target.the("register button")
-            .locatedBy("//button[contains(.,'Register')]");
+            .locatedBy("/html/body/my-app/div/main/my-register/div/div/form/button");
 
     public static final Target REGISTRATION_SUCCESS_MESSAGE = Target.the("registration success message")
             .locatedBy("//*[contains(text(),'Registration is successful')]");
@@ -41,3 +41,4 @@ public class UserInterface {
     public static final Target LOGOUT_LINK = Target.the("logout link")
             .locatedBy("//a[contains(.,'Logout')]");
 }
+

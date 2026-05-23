@@ -18,6 +18,7 @@ Feature: Registro, inicio de sesión y comentario sobre un auto en Buggy Cars
     And deja un comentario sobre el auto
     Then deberia ver el comentario registrado
 
+  @e2e
   Scenario: Flujo E2E completo de registro, inicio de sesion y comentario
     When se registra con datos validos
     And inicia sesion con sus credenciales

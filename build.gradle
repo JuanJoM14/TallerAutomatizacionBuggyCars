@@ -56,8 +56,15 @@ dependencies {
 }
 
 tasks.named('test') {
-    // System configs
+    def cucumberTags = System.getProperty("cucumber.filter.tags")
+    if (cucumberTags != null && !cucumberTags.isBlank()) {
+        systemProperty "cucumber.filter.tags", cucumberTags
+    }
 
+    def cucumberFeatures = System.getProperty("cucumber.features")
+    if (cucumberFeatures != null && !cucumberFeatures.isBlank()) {
+        systemProperty "cucumber.features", cucumberFeatures
+    }
 }
 
 tasks.register('serenityReport', JavaExec) {
@@ -100,3 +107,7 @@ tasks.register('copySerenityReportResources', Copy) {
 tasks.named('serenityReport') {
     finalizedBy 'copySerenityReportResources'
 }
+
+
+
+

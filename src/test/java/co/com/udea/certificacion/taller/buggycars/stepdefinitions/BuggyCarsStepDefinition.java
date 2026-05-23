@@ -34,20 +34,14 @@ public class BuggyCarsStepDefinition {
         );
     }
 
-    @Given("que existe un usuario registrado")
-    public void queExisteUnUsuarioRegistrado() {
-        OnStage.theActorInTheSpotlight().attemptsTo(
-            RegisterUser.withValidData(user)
-        );
-    }
-
+    /*
     @Given("que el usuario esta autenticado")
     public void queElUsuarioEstaAutenticado() {
         OnStage.theActorInTheSpotlight().attemptsTo(
             RegisterUser.withValidData(user),
             LoginUser.withValidData(user)
         );
-    }
+    }*/
 
     @When("se registra con datos validos")
     public void seRegistraConDatosValidos() {
