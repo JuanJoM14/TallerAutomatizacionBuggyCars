@@ -85,7 +85,7 @@ public class BuggyCarsStepDefinition {
         );
     }
 
-    @When("inicia sesion con una contraseña incorrecta")
+    @When("inicia sesion con una contrase\u00f1a incorrecta")
     public void iniciaSesionConUnaContrasenaIncorrecta() {
         BuggyCarsUser invalidCredentials = BuggyCarsUser.withData(
                 user.getUsername(),
@@ -155,3 +155,4 @@ public class BuggyCarsStepDefinition {
     public void deberiaVerElComentarioRegistrado() {
     }
 }
+
