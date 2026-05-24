@@ -25,13 +25,13 @@ Feature: Registro, inicio de sesion y comentario sobre un auto en Buggy Cars
     When inicia sesion con sus credenciales
     Then deberia ver su nombre de usuario en la sesion
 
-  @login @login_contrasena_incorrecta
+  @login_contrasena_incorrecta
   Scenario: Inicio de sesion fallido con contraseña incorrecta
     Given que existe un usuario registrado
     When inicia sesion con una contraseña incorrecta
     Then deberia ver el mensaje de error de login "Invalid username/password"
 
-  @login @login_usuario_inexistente
+  @login_usuario_inexistente
   Scenario: Inicio de sesion fallido con usuario inexistente
     Given que existe un usuario registrado
     When inicia sesion con un usuario inexistente
