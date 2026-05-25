@@ -40,5 +40,26 @@ public class UserInterface {
 
     public static final Target LOGOUT_LINK = Target.the("logout link")
             .locatedBy("//a[contains(.,'Logout')]");
+
+    public static final Target HOME_LINK = Target.the("Buggy Rating home link")
+            .locatedBy("//a[contains(@class,'navbar-brand') and normalize-space()='Buggy Rating']");
+
+    public static final Target POPULAR_MODEL_LINK = Target.the("popular model link")
+            .locatedBy("//h2[normalize-space()='Popular Model']/following-sibling::a[contains(@href,'/model/')]");
+
+    public static final Target SELECTED_MODEL_NAME = Target.the("selected model name")
+            .locatedBy("//*[contains(normalize-space(.),'Lamborghini') and contains(normalize-space(.),'Diablo')]");
+
+    public static final Target COMMENT_FIELD = Target.the("comment field")
+            .locatedBy("//textarea[@id='comment' or @name='comment']");
+
+    public static final Target VOTE_BUTTON = Target.the("vote button")
+            .locatedBy("//button[contains(normalize-space(.),'Vote')]");
+
+    public static final Target VOTE_SUCCESS_MESSAGE = Target.the("vote success message")
+            .locatedBy("//*[contains(normalize-space(.),'Thank you for your vote')]");
+
+    public static final Target LOGIN_REQUIRED_TO_VOTE_MESSAGE = Target.the("login required to vote message")
+            .locatedBy("//*[contains(normalize-space(.),'You need to be logged in to vote')]");
 }
 

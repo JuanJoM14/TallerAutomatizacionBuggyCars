@@ -1,13 +1,18 @@
 package co.com.udea.certificacion.taller.buggycars.stepdefinitions;
 
 import co.com.udea.certificacion.taller.buggycars.models.BuggyCarsUser;
+import co.com.udea.certificacion.taller.buggycars.questions.AuthenticationRequiredToComment;
+import co.com.udea.certificacion.taller.buggycars.questions.CommentFormIsAvailable;
+import co.com.udea.certificacion.taller.buggycars.questions.CommentWasRegistered;
 import co.com.udea.certificacion.taller.buggycars.questions.LoginErrorMessageDisplayed;
 import co.com.udea.certificacion.taller.buggycars.questions.LoginWasSuccessful;
 import co.com.udea.certificacion.taller.buggycars.questions.RegistrationErrorMessageDisplayed;
 import co.com.udea.certificacion.taller.buggycars.questions.RegistrationWasSuccessful;
+import co.com.udea.certificacion.taller.buggycars.tasks.CommentOnSelectedCar;
 import co.com.udea.certificacion.taller.buggycars.tasks.OpenBuggyCars;
 import co.com.udea.certificacion.taller.buggycars.tasks.LoginUser;
 import co.com.udea.certificacion.taller.buggycars.tasks.RegisterUser;
+import co.com.udea.certificacion.taller.buggycars.tasks.SelectCar;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -23,6 +28,7 @@ import static org.hamcrest.Matchers.is;
 public class BuggyCarsStepDefinition {
 
     private BuggyCarsUser user;
+    private String carComment;
 
     @Before
     public void config(){
@@ -38,6 +44,7 @@ public class BuggyCarsStepDefinition {
             );
         }
         user = BuggyCarsUser.withRandomData();
+        carComment = "Comentario automatizado sobre el auto " + System.currentTimeMillis();
     }
 
     @Given("que el usuario abre Buggy Cars")
@@ -117,10 +124,23 @@ public class BuggyCarsStepDefinition {
 
     @When("selecciona un auto")
     public void seleccionaUnAuto() {
+        OnStage.theActorInTheSpotlight().attemptsTo(
+                SelectCar.popularModel()
+        );
     }
 
     @When("deja un comentario sobre el auto")
     public void dejaUnComentarioSobreElAuto() {
+        OnStage.theActorInTheSpotlight().attemptsTo(
+                CommentOnSelectedCar.with(carComment)
+        );
+    }
+
+    @When("intenta comentar sin seleccionar un auto")
+    public void intentaComentarSinSeleccionarUnAuto() {
+        OnStage.theActorInTheSpotlight().attemptsTo(
+                OpenBuggyCars.page()
+        );
     }
 
     @Then("deberia ver un mensaje de registro exitoso")
@@ -153,6 +173,23 @@ public class BuggyCarsStepDefinition {
 
     @Then("deberia ver el comentario registrado")
     public void deberiaVerElComentarioRegistrado() {
+        OnStage.theActorInTheSpotlight().should(
+                seeThat(CommentWasRegistered.withText(carComment), is(true))
+        );
+    }
+
+    @Then("deberia ver que debe iniciar sesion para comentar")
+    public void deberiaVerQueDebeIniciarSesionParaComentar() {
+        OnStage.theActorInTheSpotlight().should(
+                seeThat(AuthenticationRequiredToComment.displayed(), is(true))
+        );
+    }
+
+    @Then("no deberia ver el formulario de comentario")
+    public void noDeberiaVerElFormularioDeComentario() {
+        OnStage.theActorInTheSpotlight().should(
+                seeThat(CommentFormIsAvailable.displayed(), is(false))
+        );
     }
 }
 

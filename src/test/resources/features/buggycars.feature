@@ -44,6 +44,17 @@ Feature: Registro, inicio de sesion y comentario sobre un auto en Buggy Cars
     And deja un comentario sobre el auto
     Then deberia ver el comentario registrado
 
+  @comentario_sin_autenticacion
+  Scenario: Comentario fallido sobre un auto sin iniciar sesion
+    When selecciona un auto
+    Then deberia ver que debe iniciar sesion para comentar
+
+  @comentario_sin_auto
+  Scenario: Comentario fallido sin seleccionar un auto
+    Given que el usuario esta autenticado
+    When intenta comentar sin seleccionar un auto
+    Then no deberia ver el formulario de comentario
+
   @e2e
   Scenario: Flujo E2E completo de registro, inicio de sesion y comentario
     When se registra con datos validos
